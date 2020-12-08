@@ -1,0 +1,39 @@
+{
+  "name": "drivemz",
+  "version": "1.0.0",
+  "description": "API for drivemz project, a project to help people preparing for INATTER teoric exam",
+  "main": "server.ts",
+  "author": "Hello Jonas <hellojonashp@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.0.1",
+    "mongoose": "^5.11.4",
+    "restify-errors": "^8.0.2"
+  },
+  "scripts": {
+    "copy-env": "[ -f ./src/*.env  ] && ([ ! -d ./dist ] && mkdir ./dist;  cp -r ./src/*.env ./dist)",
+    "copy-assets": "[ -d ./src/assets  ] && ([ ! -d ./dist ] && mkdir ./dist;  cp -r ./src/assets ./dist)",
+    "serve": "nodemon",
+    "compile-ts": "tsc",
+    "build": "npm-run-all --serial copy-env copy-assets compile-ts"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.8",
+    "@types/express": "^4.17.9",
+    "@types/express-mongo-sanitize": "^1.3.2",
+    "@types/mongoose": "^5.10.2",
+    "@types/node": "^14.14.10",
+    "@types/restify-errors": "^4.3.3",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^9.1.0",
+    "typescript": "^4.1.2"
+  }
+}
