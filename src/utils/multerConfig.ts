@@ -2,7 +2,7 @@ import { existsSync, mkdirSync } from 'fs';
 import multer, { DiskStorageOptions, FileFilterCallback, Multer } from 'multer';
 import { Request } from 'express';
 import { randomBytes, createHash } from 'crypto';
-import { BadRequestError } from 'restify-errors';
+import createError from 'http-errors';
 
 export const createStorageOption = (
   destination: string
@@ -36,7 +36,7 @@ export const fileFilter = (
   cb: FileFilterCallback
 ) => {
   if (!file.mimetype.startsWith('image')) {
-    return cb(new BadRequestError('File must be an image'));
+    return cb(new createError.BadRequest('File must be an image'));
   }
 
   cb(null, true);

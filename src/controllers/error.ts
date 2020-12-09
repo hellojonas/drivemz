@@ -1,4 +1,5 @@
 import { ErrorRequestHandler, Handler } from 'express';
+import createError from 'http-errors';
 
 const resourceNotFound: Handler = (req, res, next) => {
   res.json({
@@ -10,7 +11,12 @@ const resourceNotFound: Handler = (req, res, next) => {
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   console.log(err);
   console.log('-------------------------------------------------------');
-  res.json({ status: 'fail', error: err });
+  if (createError.isHttpError(err)) {
+    return res
+      .status(err.status)
+      .json({ status: 'fail', message: err.message });
+  }
+  res.status(500).json({ status: 'fail', message: 'Something went wrong' });
 };
 
 export { globalErrorHandler, resourceNotFound };

@@ -2,14 +2,15 @@ import Question from '../models/Question';
 import IQuestion from '../interfaces/IQuestion';
 import { Handler } from 'express';
 import forwardError from '../utils/forwardError';
-import { NotFoundError } from 'restify-errors';
+import createError from 'http-errors';
 import isJson from '../utils/isJson';
 
 const exists = async (id: string, errorMessage: string): Promise<IQuestion> => {
   const question = await Question.findById(id);
 
   if (!question) {
-    throw new NotFoundError(errorMessage);
+    const err = new createError.NotFound(errorMessage);
+    throw err;
   }
 
   return question;
