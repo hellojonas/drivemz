@@ -17,7 +17,7 @@
   "scripts": {
     "copy-env": "[ -f ./src/*.env  ] && ([ ! -d ./dist ] && mkdir ./dist;  cp -r ./src/*.env ./dist)",
     "copy-assets": "[ -d ./src/assets  ] && ([ ! -d ./dist ] && mkdir ./dist;  cp -r ./src/assets ./dist)",
-    "serve": "nodemon",
+    "serve": "NODE_ENV=development nodemon",
     "compile-ts": "tsc",
     "build": "npm-run-all --serial copy-env copy-assets compile-ts"
   },

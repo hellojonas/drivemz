@@ -4,4 +4,4 @@ dist
 yarn-error.log
 *config.ts
 *config.js
-sr/assets/img/questions
+src/assets/img/questions

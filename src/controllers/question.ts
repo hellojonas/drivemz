@@ -4,6 +4,7 @@ import { Handler } from 'express';
 import forwardError from '../utils/forwardError';
 import createError from 'http-errors';
 import isJson from '../utils/isJson';
+import QueryFileter from '../utils/QueryFilter';
 
 const exists = async (id: string, errorMessage: string): Promise<IQuestion> => {
   const question = await Question.findById(id);
@@ -26,8 +27,15 @@ export const createQuestion: Handler = forwardError(async (req, res, next) => {
 });
 
 export const allQuestions: Handler = forwardError(async (req, res, next) => {
-  const questions = await Question.find();
-  res.json(questions);
+  const query = new QueryFileter(Question, req);
+  const total:number = await Question.find().estimatedDocumentCount();
+
+  const questions = await query
+    .paginate()
+    .filter()
+    .exec();
+
+  res.json({ total, length: questions.length, questions });
 });
 
 export const findQuestion: Handler = forwardError(async (req, res, next) => {
