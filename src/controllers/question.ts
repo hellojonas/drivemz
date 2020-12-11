@@ -33,6 +33,7 @@ export const allQuestions: Handler = forwardError(async (req, res, next) => {
   const questions = await query
     .paginate()
     .filter()
+    .sort()
     .exec();
 
   res.json({ total, length: questions.length, questions });

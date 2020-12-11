@@ -5,7 +5,7 @@ import IQueryFilter from '../interfaces/IQueryFilter';
 export default class QueryFilter<T extends Document>
   implements IQueryFilter<T> {
   private query: DocumentQuery<T[], T>;
-  private sort: string;
+  private sortBy: string;
   private filters: string;
   private page: number = 1;
   private limit: number = 15;
@@ -13,7 +13,7 @@ export default class QueryFilter<T extends Document>
   constructor(model: Model<T>, req: Request) {
     this.query = model.find();
 
-    this.sort = typeof req.query.sort === 'string' ? req.query.sort : '';
+    this.sortBy = typeof req.query.sort === 'string' ? req.query.sort : '';
     this.filters = typeof req.query.filter === 'string' ? req.query.filter : '';
 
     if (typeof req.query.page === 'string' && !isNaN(+req.query.page)) {
@@ -31,10 +31,22 @@ export default class QueryFilter<T extends Document>
   }
 
   filter(): this {
-    console.log(this.filters.replace(/,/g, ' '));
+    if (!/^(\w+,?)+$/.test(this.filters)) {
+      return this;
+    }
     this.query.select(this.filters.replace(/,/g, ' '));
     return this;
   }
+
+  sort(): this {
+    if (!/^(-?\w+,?)+$/.test(this.sortBy)) {
+      return this;
+    }
+    const sortBy = this.sortBy.replace(/,/g, '');
+    this.query.sort(sortBy);
+    return this;
+  }
+
   async exec(): Promise<T[]> {
     return await this.query;
   }
