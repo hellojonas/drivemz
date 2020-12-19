@@ -1,4 +1,9 @@
-import config from './app.config';
+import dotenv from 'dotenv';
+
+dotenv.config({
+  path: './config.env',
+});
+
 import app from './app';
 import mongoose from 'mongoose';
 
@@ -9,15 +14,15 @@ process.on('uncaughtException', err => {
 });
 
 mongoose
-  .connect(`mongodb://localhost:27017/${config.DB_NAME}`, {
+  .connect(`mongodb://localhost:27017/${process.env.DB_NAME}`, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log('DB Connected'));
 
-const server = app.listen(config.PORT, () =>
-  console.log('App Listening on Port: ' + config.PORT)
+const server = app.listen(process.env.PORT, () =>
+  console.log('App Listening on Port: ' + process.env.PORT)
 );
 
 process.on('SIGTERM', () => {
