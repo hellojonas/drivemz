@@ -28,13 +28,9 @@ export const createQuestion: Handler = forwardError(async (req, res, next) => {
 
 export const allQuestions: Handler = forwardError(async (req, res, next) => {
   const query = new QueryFileter(Question, req);
-  const total:number = await Question.find().estimatedDocumentCount();
+  const total: number = await Question.find().estimatedDocumentCount();
 
-  const questions = await query
-    .paginate()
-    .filter()
-    .sort()
-    .exec();
+  const questions = await query.paginate().filter().sort().exec();
 
   res.json({ total, length: questions.length, questions });
 });
@@ -59,3 +55,15 @@ export const deleteQuestion: Handler = forwardError(async (req, res, next) => {
   const deletedQuestion = await Question.findByIdAndDelete(req.params.id);
   res.json(deletedQuestion);
 });
+
+export const getRandomQuestions: Handler = forwardError(
+  async (req, res, next) => {
+    const questions = await Question.aggregate([
+      {
+        $sample: { size: 25 },
+      },
+    ]);
+
+    res.json(questions);
+  }
+);

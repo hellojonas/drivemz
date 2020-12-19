@@ -7,6 +7,7 @@ import {
   findQuestion,
   updateQuestion,
   deleteQuestion,
+  getRandomQuestions,
 } from '../controllers/question';
 
 const router: Router = Router();
@@ -19,6 +20,8 @@ router
   .route('/')
   .post(upload.single('image'), createQuestion)
   .get(allQuestions);
+
+router.get('/random', getRandomQuestions);
 
 router
   .route('/:id')
